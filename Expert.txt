@@ -1,0 +1,45 @@
+
+diseases = {
+    "Flu": {"fever", "headache", "cough", "body aches"},
+    "Cold": {"cough", "sore throat", "runny nose", "sneezing"},
+    "COVID-19": {"fever", "cough", "shortness of breath", "loss of taste or smell"},
+    "Malaria": {"fever", "chills", "sweating", "nausea"},
+    "Chickenpox": {"fever", "itchy rash", "blisters", "headache"}
+}
+
+
+symptom_questions = [
+    "fever", "cough", "headache", "sore throat",
+    "runny nose", "shortness of breath", "loss of taste or smell", "itchy rash","sneezing"
+]
+
+
+def diagnose():
+    print("Welcome to the Hospital Expert System.")
+    print("Please answer the following questions with 'yes' or 'no'.\n")
+
+    user_symptoms = set()
+
+    for symptom in symptom_questions:
+        answer = input(f"Do you have {symptom}? (yes/no): ").lower()
+        if answer == 'yes':
+            user_symptoms.add(symptom)
+
+    matched_diseases = []
+
+    for disease, symptoms in diseases.items():
+        match_count = len(user_symptoms & symptoms)
+        if match_count >= 2:  
+            matched_diseases.append((disease, match_count))
+
+    if matched_diseases:
+        matched_diseases.sort(key=lambda x: x[1], reverse=True)  
+        print("\nBased on your symptoms, you may have:")
+        for disease, _ in matched_diseases:
+            print(f"- {disease}")
+    else:
+        print("\nYour symptoms do not clearly match any known diseases. Please consult a doctor.")
+
+
+if __name__ == "__main__":
+    diagnose()

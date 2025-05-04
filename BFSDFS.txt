@@ -1,0 +1,69 @@
+import random
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# Download NLTK data (only once needed)
+nltk.download('punkt')
+nltk.download('stopwords')
+
+response = {
+    "greet": ["Hello, how can I help you?", "How can I assist you?", "I'm here to help you."],
+    "bye": ["Have a nice day!", "See you soon!", "Bye!"],
+    "product": ["We have phones, laptops, watches, tablets, and other accessories."],
+    "help": ["I can help you with product details and order status."],
+    "order_response": ["Sure, enter the order number."],
+    "default": ["I can't understand what you're trying to say. Please type again."]
+}
+
+def check_status(order_num):
+    status = [
+        "is placed successfully", "has been shipped", "is out for delivery",
+        "will be delivered shortly", "sorry for the delay, your order will be delivered very soon"
+    ]
+    return f"Order {order_num} {random.choice(status)}"
+
+def clean_input(text):
+    # Tokenize and remove stopwords
+    tokens = word_tokenize(text.lower())
+    stop_words = set(stopwords.words("english"))
+    filtered = [word for word in tokens if word not in stop_words]
+    return filtered
+
+def get_response(user_input):
+    words = clean_input(user_input)
+
+    if any(word in words for word in ["hello", "hi", "hii"]):
+        return random.choice(response["greet"])
+    elif "help" in words:
+        return random.choice(response["help"])
+    elif any(word in words for word in ["product", "products"]):
+        return random.choice(response["product"])
+    elif "bye" in words:
+        return random.choice(response["bye"])
+    elif "mobiles" in words:
+        return "We have Samsung S25, iPhone 12/13/14/16, Mi Redmi Note 7/8/9."
+    elif "laptops" in words:
+        return "We have HP, Dell, Motorola, Lenovo, ASUS."
+
+    if "order" in words:
+        order_number = re.findall(r'\d+', user_input)
+        if order_number:
+            return check_status(order_number[0])
+        else:
+            return random.choice(response["order_response"])
+
+    return random.choice(response["default"])
+
+def chat():
+    print("Chatbot: I am here to help you. Type 'bye' to exit.")
+    while True:
+        user_input = input("You: ")
+        if "bye" in user_input.lower():
+            print("Chatbot:", random.choice(response["bye"]))
+            break
+        print("Chatbot:", get_response(user_input))
+
+if __name__ == "__main__":
+    chat()
