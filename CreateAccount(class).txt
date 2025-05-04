@@ -1,0 +1,44 @@
+public class CreateAccount {
+    public String name{get; set;}
+    public String phonenumber{get; set;}
+    public String websiteurl{get; set;}
+    public String selectname{get; set;}
+    public List<selectoption> lstnamesel {get; set;}
+    
+    
+    public CreateAccount(ApexPages.StandardController controller)
+    {
+        lstnamesel=new List<selectoption>();
+        lstnamesel.add(new selectOption('','-None-'));
+        lstnamesel.add(new selectOption('IT','IT'));
+        lstnamesel.add(new selectOption('mech','mech'));
+        lstnamesel.add(new selectOption('chem','chem'));
+        lstnamesel.add(new selectOption('entc','entc'));
+     }
+    
+    public PageReference CreateAccount(){
+        System.debug('test');
+        if(!String.isEmpty(name)){
+            Account accountrecord=new Account(Name=name,Phone=phonenumber,Website=websiteurl,Industry=selectname);
+            insert accountrecord;
+            PageReference pg=new PageReference('/'+accountrecord.id);
+            pg.setRedirect(true);
+            return pg;
+                }
+        else{
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.CONFIRM,'please enter account name'));
+        
+            
+           }
+        return NULL;
+            
+        
+    }
+    public PageReference CancelAccount(){
+        PageReference pg=new PageReference('/'+Schema.SObjectType.Account.getkeyPrefix()+'/o');
+          return pg;
+    }
+    
+    
+    
+}

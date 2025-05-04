@@ -1,0 +1,25 @@
+<apex:page standardController="Account" extensions="CreateAccount">
+<apex:form id="apexform">
+<apex:pageBlock title="createaccount" id="pageblockid">
+<apex:pageMessages id="showmsg"></apex:pageMessages>
+    
+<apex:pageBlockSection columns="2">
+<apex:inputText value="{!name}" label="Accoutname" required="true"/>    
+    <apex:inputText value="{!phonenumber}" label="phone"/>
+    <apex:inputText value="{!websiteurl}" label="website"/>
+    <apex:selectList size="1" value="{!selectname}" label="Industry" >
+        <apex:selectOptions value="{!lstnamesel}"/></apex:selectList>
+    </apex:pageBlockSection>
+    <apex:pageBlockButtons >
+        <apex:CommandButton action="{!createaccount}" value="save"/>
+        <apex:CommandButton action="{!cancelaccount}" value="cancel"/>
+        
+    
+    </apex:pageBlockButtons>
+    
+ 
+    </apex:pageBlock>
+    <apex:actionFunction name="createFunction" action="{!createaccount}"/>
+    <apex:actionFunction name="cancelFunction" action="{!cancelaccount}"/>
+    </apex:form>
+</apex:page>
